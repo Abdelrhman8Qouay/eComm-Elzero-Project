@@ -1,4 +1,4 @@
-
+/* --------------------------------*/
 /* Start Main Rules */
 
 * {
@@ -13,12 +13,23 @@ body {
     --background-color: #F4F4F4;
     --text-dark: #000;
     --text-white: #fff;
-    --active-color: rgb(23, 94, 219);
+
+    --deg-color-1: #0FC2C0;
+    --deg-color-2: #0CABA8;
+    --deg-color-3: #008F8C;
+    --deg-color-4: #015958;
+    --deg-color-5: #023535;
+}
+
+h1 {
+    font-size: 50px;
+    margin: 40px 0;
+    font-weight: bold;
+    color: var(--deg-color-5);
 }
 
 /* End Main Rules */
-
-
+/* --------------------------------*/
 /* Start Login Form */
 
 form.login {
@@ -30,28 +41,83 @@ form.login .btn {
 }
 
 /* End Login Form */
-
-/* Start Bootstrap Edits */
+/* --------------------------------*/
+/* Start Navbar Part */
 
 .navbar .container .navbar-collapse .navbar-nav .nav-item .active {
-    color: var(--active-color);
+    color: var(--deg-color-1);
+}
+
+.navbar .container #userTarget {
+    color: var(--deg-color-1);
 }
 
 .material-symbols-outlined {
     font-size: 16px;
 }
 
-/* End Bootstrap Edits */
-
-/* Start Member Page */
-
-h1 {
-    font-size: 50px;
-    margin: 40px 0;
-    font-weight: bold;
-    color: #888;
+.card-header {
+    background-color: var(--deg-color-5);
+    color: var(--text-white);
 }
 
+/* End Bootstrap Edits */
+/* --------------------------------*/
+/* Start Dashboard Page */
+.home-stats .stat {
+    padding: 20px;
+    font-size: 15px;
+    border-radius: 10px;
+    color: var(--text-white);
+}
+.home-stats .stat a {
+    color: var(--text-white);
+    text-decoration: none;
+}
+.home-stats .stat a:hover {
+    color: var(--deg-color-1);
+}
+.home-stats .stat span {
+    display: block;
+    font-size: 60px;
+}
+.home-stats .stat.st-members {
+    background-color: var(--deg-color-2);
+}
+.home-stats .stat.st-pending {
+    background-color: var(--deg-color-3);
+}
+.home-stats .stat.st-items {
+    background-color: var(--deg-color-4);
+}
+.home-stats .stat.st-comments {
+    background-color: var(--deg-color-5);
+}
+
+.card_latest_users .card-body ol li:nth-child(even) {
+    background-color: var(--deg-color-3);
+}
+.card_latest_users .card-body ol li:nth-child(odd) {
+    background-color: var(--deg-color-4);
+}
+.card_latest_users .card-body {
+    background-color: var(--text-dark);
+    padding: 0;
+}
+.card_latest_users .card-body ol li {
+    color: var(--text-white);
+}
+.card_latest_users .card-body ol li a {
+    display: block;
+    color: var(--text-white);
+    text-decoration: none;
+}
+.card_latest_users .card-body ol li a:hover {
+    color: var(--deg-color-1);
+}
+/* End Dashboard Page */
+/* --------------------------------*/
+/* Start Member Page */
 
 .container .needs-validation .mb-3 {
     position: relative;
@@ -96,5 +162,48 @@ h1 {
 .main-table {
     box-shadow: 13px 17px 20px 0px black;
 }
+.main-table thead tr th {
+    background-color: var(--deg-color-4);
+}
 
 /* End Member Page */
+/* --------------------------------*/
+/* Start Categories Page */
+.categories-card .card-header {
+    font-weight: bold;
+}
+.categories-card .card-header .ordering a{
+    text-decoration: none;
+    color: var(--deg-color-3);
+}
+.categories-card .card-header .ordering a:hover,
+.categories-card .card-header .ordering a.active {
+    color: var(--deg-color-1);
+}
+.categories-card .card-body {
+    background-color: var(--deg-color-5);
+}
+.categories-card .face-cat li:nth-child(even) {
+    background-color: var(--deg-color-3);
+}
+.categories-card .face-cat li:nth-child(odd) {
+    background-color: var(--deg-color-4);
+}
+.categories-card .face-cat li {
+    color: var(--text-white);
+}
+.categories-card .face-cat li:hover .editing-btn {
+    display: block;
+}
+.categories-card .face-cat li .editing-btn {
+    background-color: var(--deg-color-5);
+    text-decoration: none;
+    margin-left: 5px;
+    transition: 0.5s;
+    display: none;
+}
+.categories-card .face-cat li .editing-btn:hover {
+    color: var(--deg-color-1);
+}
+/* End Categories Page */
+/* --------------------------------*/

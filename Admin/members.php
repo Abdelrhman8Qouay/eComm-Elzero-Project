@@ -12,7 +12,7 @@
     $pageTitle = 'Members';
 
     if(isset($_SESSION['Username'])) {
-        $pageTitle = 'Dashboard | Home';
+        $pageTitle = 'Dashboard | Members';
 
         include 'init.php';
 
@@ -20,26 +20,28 @@
 
         if ($do == 'Manage') { // Members Page
 
-            if($check == 1):
-                echo 'Exist Member';
-            endif;
+            $query = '';
+
+            if(isset($_GET['page']) && $_GET['page'] == 'Pending') {
+                $query = 'AND RegStatus = 0';
+            }
 
             // If You Want To Show Your Self In Table As Admin.. Don't Make (WHERE Group ....)
             // Select All Users Except Admin
-            $stmt = $con->prepare("SELECT * FROM users WHERE GroupID != 2");
+            $stmt = $con->prepare("SELECT * FROM users WHERE UserID != 1 $query");
             $stmt->execute();
             // Assign To Variable
             $rows = $stmt->fetchAll();
 
             ?>
             <div class="container my-3">
-                <h1 class="text-center text-dark">Manage Members</h1>
+                <h1 class="text-center">Manage Members</h1>
 
                 <div class="mb-3">
-                    <a href="members.php?do=Add" class="btn btn-primary"><span class="material-symbols-outlined">add</span> Add Member</a>
+                    <a href="members.php?do=Add" class="btn btn-info"><span class="material-symbols-outlined">add</span> Add Member</a>
                 </div>
                 <table class="main-table table table-dark table-striped">
-                    <thead>
+                    <thead class="text-center">
                         <tr>
                             <th scope="col">#ID</th>
                             <th scope="col">Username</th>
@@ -47,38 +49,26 @@
                             <th scope="col">FullName</th>
                             <th scope="col">Registered Data</th>
                             <th scope="col">Control</th>
+                            <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="text-center">
                     <?php foreach($rows as $row): ?>
                         <tr>
                             <th><?php echo $row['UserID'] ?></th>
                             <th><?php echo $row['Username'] ?></th>
                             <th><?php echo $row['Email'] ?></th>
                             <th><?php echo $row['FullName'] ?></th>
-                            <th></th>
+                            <th><?php echo $row['Date'] ?></th>
                             <th><?php echo '
                                 <a href="members.php?do=Edit&userid=' . $row['UserID'] .' " class="btn btn-info"><span class="material-symbols-outlined">edit_note</span>Edit</a>
                                 <a href="members.php?do=Delete&userid=' . $row['UserID'] .' " class="btn btn-danger confirma-message"><span class="material-symbols-outlined">close</span>Delete</a>
                                 ' ?></th>
+                            <th><?php if ( $row['RegStatus'] == 0) { echo '<a href="members.php?do=Activate&userid=' . $row['UserID'] .' " class="btn btn-primary">Activate</a>'; } ?></th>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-            </div>
-
-            <div class="self_modal" id="confirm-delete">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="alert alert-danger" role="alert">
-                            Are You Sure You Want Delete Member?
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between">
-                        <button type="button" class="btn btn-primary" id="close-btn">Close</button>
-                        <button type="button" class="btn btn-danger" id="yes-btn">Yes</button>
-                    </div>
-                </div>
             </div>
 
             <?php
@@ -87,7 +77,7 @@
 
             ?>
             <div class="container my-3">
-                <h1 class="text-center text-dark">Add Member</h1>
+                <h1 class="text-center">Add Member</h1>
 
                 <form class="row g-3 needs-validation" action="?do=Insert" method="POST">
                     <div class="mb-3">
@@ -166,25 +156,27 @@
                     $check = checkItem("Username", "users", $user);
 
                     if($check == 1) {
-                        redirectHome('Sorry This Username Is Already Exist', 5);
+                        $theMsg = '<div class="alert alert-danger" role="alert">Sorry This Username Is Already Exist</div>';
+                        redirectHome($theMsg,'previous' , 5);
                     } else {
 
                         // Insert User Info In Database
                         $stmt = $con->prepare("INSERT INTO
-                                                    users(Username, Password, Email, FullName)
-                                                VALUES(:user, :pass, :email, :zname) ");
+                                                    users(Username, Password, Email, FullName, RegStatus, Date)
+                                                VALUES(:user, :pass, :email, :zname, 1, now()) ");
                         $stmt->execute(array('user' => $user, 'pass' => $hashPass, 'email' => $email, 'zname' => $name));
 
                         // Echo Success Message
-                        echo  '<div class="alert alert-success" role="alert">' . $stmt->rowCount() . ' Record Insert</div>';
+                        $theMsg = "<div class='alert alert-success' role='alert'>{$stmt->rowCount()} Record Insert</div>";
+                        redirectHome($theMsg, null, 5);
                     }
+
                 }
 
                 echo '</div>';
-            } else {
-                // You Cant See this Page
-
-                redirectHome('Error Update Page: Sorry You Can\'t Browse This Page Directly', 6);
+            } else { // You Can't See this Page
+                $theMsg = "<div class='alert alert-danger' role='alert'>Error Insert Page: Sorry You Can\'t Browse This Page Directly</div>";
+                redirectHome($theMsg, null ,5);
             }
 
         } elseif ($do == 'Edit') { //Edit Page
@@ -206,7 +198,7 @@
 
                 ?>
                 <div class="container my-3">
-                    <h1 class="text-center text-dark">Edit Member</h1>
+                    <h1 class="text-center">Edit Member</h1>
 
                     <form class="row g-3 needs-validation" action="?do=Update" method="POST">
                         <input type="hidden" name="userid" value="<?php echo $userid ?>" />
@@ -237,12 +229,13 @@
 
             <?php
             } else { // If There's No Such ID Show The Error Message
-                echo '<div class="container my-3">
+                $theMsg = '<div class="container my-3">
                         <div class="alert alert-danger" role="alert">
                             There\'s No Such ID For User Id
                         </div>
                     </div>
                 ';
+                redirectHome($theMsg, 'back', 5);
             }
         } elseif ($do == 'Update') { // Update Page
             echo '<h1 class="text-center text-dark">Update Member</h1>';
@@ -294,29 +287,28 @@
                     $stmt->execute(array($user, $email, $name, $pass, $id));
 
                     // Echo Success Message
-                    echo  '<div class="alert alert-success" role="alert">' . $stmt->rowCount() . ' Record Updated</div>';
+                    $theMsg = "<div class='alert alert-success' role='alert'>{$stmt->rowCount()} Record Updated</div>";
+                    redirectHome($theMsg, 'back', 5);
                 }
 
             } else {
-                redirectHome('Error Insert Page: Sorry You Can\'t Browse This Page Directly', 6);
+                $theMsg = "<div class='alert alert-danger' role='alert'>Error Update Page: Sorry You Can\'t Browse This Page Directly</div>";
+                redirectHome($theMsg, null ,5);
             }
 
             echo '</div>';
         } elseif ($do == 'Delete') { // Delete Member Page
+            echo '<h1 class="text-center">Delete Member</h1>';
+            echo '<h1 class="container">';
 
             // Check If Get Request userid Is Numeric & Get The Integer Value Of It
             $userid =  isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) : 0;
 
             // Select All Data Depend On This ID
-            $stmt = $con->prepare("SELECT * FROM users WHERE UserID = ? LIMIT 1");
+            $check = checkItem('userid', 'users', $userid);
 
-            // Execute Query
-            $stmt->execute(array($userid));
-
-            // The Row Count If Exists with This ID
-            $count = $stmt->rowCount();
             // If There's Such ID Show The Form
-            if ($stmt->rowCount() > 0) {
+            if ($check > 0) {
                 // Delete The Member From Database
                 $stmt = $con->prepare('DELETE FROM users WHERE UserID = :user');
                 //
@@ -324,11 +316,44 @@
                 $stmt->execute();
 
                 // Echo Success Message
-                echo  '<div class="alert alert-success" role="alert">' . $stmt->rowCount() . ' Record Deleted</div>';
+                $nameUser = getOneWithID('Username', 'users', $userid, 'UserID');
+                $theMsg = "<div class='alert alert-success' role='alert'>" . $nameUser . " Is Deleted From Users</div>";
+                redirectHome($theMsg, 'back', 5);
 
-            } else {
-                redirectHome('Member Not Exist, Go Home..', 5);
+            } else { // can't see this page
+                $theMsg = "<div class='alert alert-danger' role='alert'>Error Delete Page: Sorry You Can\'t Browse This Page Directly</div>";
+                redirectHome($theMsg, null ,5);
             }
+
+            echo '</div>';
+        } elseif ($do == 'Activate') {
+            echo '<h1 class="text-center">Activate Member</h1>';
+            echo '<h1 class="container">';
+
+            // Check If Get Request userid Is Numeric & Get The Integer Value Of It
+            $userid =  isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) : 0;
+
+            // Select All Data Depend On This ID
+            $check = checkItem('userid', 'users', $userid);
+
+            // If There's Such ID Show The Form
+            if ($check > 0) {
+                // Delete The Member From Database
+                $stmt = $con->prepare('UPDATE users SET RegStatus = 1 WHERE UserID = ?');
+                //
+                $stmt->execute(array($userid));
+
+                // Echo Success Message
+                $nameUser = getOneWithID('Username', 'users', $userid, 'UserID');
+                $theMsg = "<div class='alert alert-success' role='alert'>" . $nameUser . " Now Is Activated Member</div>";
+                redirectHome($theMsg, 'back', 8);
+
+            } else { // can't see this page
+                $theMsg = "<div class='alert alert-danger' role='alert'>Error Delete Page: Sorry You Can\'t Browse This Page Directly</div>";
+                redirectHome($theMsg, null ,5);
+            }
+
+            echo '</div>';
         }
 
         include $tpl . 'footer.php';
