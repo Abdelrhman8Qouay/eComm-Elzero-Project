@@ -51,11 +51,13 @@
                                     echo '<li class="list-group-item d-flex justify-content-between align-items-start">';
                                         echo '<div class="ms-2 me-auto">';
                                             echo '<div class="fw-bold">'. $cat['Name'] .'</div>';
-                                            if(empty($cat['Description'])) { echo '......'; } else { echo  $cat['Description']; }
-                                            echo '<div class="fw-bold">';
-                                                if($cat['Visibility'] == 1) { echo '<span title="hidden category visibility" class="badge bg-danger rounded-pill">Hidden</span>'; }
-                                                if($cat['Allow_Comment'] == 1) { echo '<span title="Disabled category Allow Commenting" class="badge bg-warning rounded-pill">Comment Disabled</span>'; }
-                                                if($cat['Allow_Ads'] == 1) { echo '<span title="Disabled category Allow Ads" class="badge bg-primary rounded-pill">Ads Disabled</span>'; }
+                                            echo '<div class="full-view">';
+                                                if(empty($cat['Description'])) { echo '......'; } else { echo  $cat['Description']; }
+                                                echo '<div class="fw-bold">';
+                                                    if($cat['Visibility'] == 1) { echo '<span title="hidden category visibility" class="badge bg-danger rounded-pill"><span class="material-symbols-outlined">visibility</span>Hidden</span>'; }
+                                                    if($cat['Allow_Comment'] == 1) { echo '<span title="Disabled category Allow Commenting" class="badge bg-warning rounded-pill"><span class="material-symbols-outlined">speaker_notes_off</span>Comment Disabled</span>'; }
+                                                    if($cat['Allow_Ads'] == 1) { echo '<span title="Disabled category Allow Ads" class="badge bg-primary rounded-pill"><span class="material-symbols-outlined">disabled_by_default</span>Ads Disabled</span>'; }
+                                                echo '</div>';
                                             echo '</div>';
                                         echo '</div>';
                                         echo '<a href="categories.php?do=Edit&catid='. $cat['ID'] .'" class="badge editing-btn">Edit</a>';

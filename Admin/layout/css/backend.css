@@ -94,6 +94,22 @@ form.login .btn {
     background-color: var(--deg-color-5);
 }
 
+.card_latest_users .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.card_latest_users .card-header .selecting {
+    cursor: pointer;
+    color: var(--text-white);
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: auto;
+}
+.card_latest_users .card-header .selecting:hover {
+    color: var(--deg-color-1);
+}
+
 .card_latest_users .card-body ol li:nth-child(even) {
     background-color: var(--deg-color-3);
 }
@@ -204,6 +220,13 @@ form.login .btn {
 }
 .categories-card .face-cat li .editing-btn:hover {
     color: var(--deg-color-1);
+
+}
+.categories-card .face-cat li.show .full-view {
+    display: inline-block;
+}
+.categories-card .face-cat li .full-view {
+    display: none;
 }
 /* End Categories Page */
 /* --------------------------------*/

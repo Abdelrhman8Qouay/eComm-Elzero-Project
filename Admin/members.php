@@ -304,6 +304,9 @@
             // Check If Get Request userid Is Numeric & Get The Integer Value Of It
             $userid =  isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) : 0;
 
+            // Get The Name Of User To Use It With Echo
+            $name = getOneWithID('Username', 'users', $userid, 'UserID');
+
             // Select All Data Depend On This ID
             $check = checkItem('userid', 'users', $userid);
 
@@ -316,8 +319,7 @@
                 $stmt->execute();
 
                 // Echo Success Message
-                $nameUser = getOneWithID('Username', 'users', $userid, 'UserID');
-                $theMsg = "<div class='alert alert-success' role='alert'>" . $nameUser . " Is Deleted From Users</div>";
+                $theMsg = "<div class='alert alert-success' role='alert'>" . $name . " Is Deleted From Users</div>";
                 redirectHome($theMsg, 'back', 5);
 
             } else { // can't see this page
