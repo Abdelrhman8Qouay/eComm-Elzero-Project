@@ -44,7 +44,7 @@ if(isset($_SESSION['Username'])) {
                 <div class="stat st-comments">
                 <span class="material-symbols-outlined">forum</span>
                     Total Comments
-                    <span>0</span>
+                    <span><a href="comments.php"><?php echo countItems('c_id', 'comments') ?></a></span>
                 </div>
             </div>
         </div>
@@ -94,6 +94,47 @@ if(isset($_SESSION['Username'])) {
                                             </div>
                                             <span class="badge bg-primary rounded-pill">'. $stat .'</span>
                                         </li>';
+                            }
+                        ?>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-sm-6">
+                <div class="card card_latest_users">
+                    <div class="card-header">
+                        <span class="material-symbols-outlined">forum</span> Latest Comments
+                        <span class="material-symbols-outlined selecting">add</span>
+                    </div>
+                    <div class="card-body">
+                        <ol class="list-group list-group-numbered">
+                        <?php
+                            $stmt1 = $con->prepare("SELECT
+                                                        comments.*, users.Username AS Member
+                                                    FROM
+                                                        comments
+                                                    INNER JOIN
+                                                        users
+                                                    ON
+                                                        users.UserID = comments.user_id
+                                                    ORDER BY c_id DESC
+                                                    LIMIT 4");
+                            $stmt1->execute();
+                            // Assign To Variable
+                            $comments = $stmt1->fetchAll();
+                            if(!empty($comments)) {
+                                foreach ($comments as $comment) {
+                                    $stat = $comment['status'] === 1 ? 'approved': '';
+                                    echo '<li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div class="ms-2 me-auto">
+                                                    <a href="comments.php?do=Edit&comid='.$comment['c_id'].'" class="fw-bold">' . $comment['Member'] .'</a>
+                                                    '.$comment['comment'] .'
+                                                </div>
+                                                <span class="badge bg-primary rounded-pill">'. $stat .'</span>
+                                            </li>';
+                                }
                             }
                         ?>
                         </ol>

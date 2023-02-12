@@ -163,15 +163,21 @@
                     redirectHome($theMsg,'previous' , 5);
                 } else {
 
-                    // Insert Category Info In Database
-                    $stmt = $con->prepare("INSERT INTO
-                                                categories(Name, Description, Ordering, Visibility, Allow_Comment, Allow_Ads)
-                                            VALUES(:zname, :zdesc, :zorder, :zvisible, :zcomment, :zads) ");
-                    $stmt->execute(array('zname' => $name, 'zdesc' => $desc, 'zorder' => $order, 'zvisible' => $visible, 'zcomment' => $comment, 'zads' => $ads));
+                    if(checkIfExistInfo('*','categories','Name',null,$name,null) >= 1){
+                        $theMsg = "<div class='alert alert-danger' role='alert'>This Name Is Already Exists</div>";
+                        redirectHome($theMsg, 'back', 5);
+                    }else {
+                        // Insert Category Info In Database
+                        $stmt = $con->prepare("INSERT INTO
+                        categories(Name, Description, Ordering, Visibility, Allow_Comment, Allow_Ads)
+                        VALUES(:zname, :zdesc, :zorder, :zvisible, :zcomment, :zads) ");
+                        $stmt->execute(array('zname' => $name, 'zdesc' => $desc, 'zorder' => $order, 'zvisible' => $visible, 'zcomment' => $comment, 'zads' => $ads));
 
-                    // Echo Success Message
-                    $theMsg = "<div class='alert alert-success' role='alert'>". $name ." Category Inserted Successfully</div>";
-                    redirectHome($theMsg, null, 5);
+                        // Echo Success Message
+                        $theMsg = "<div class='alert alert-success' role='alert'>". $name ." Category Inserted Successfully</div>";
+                        redirectHome($theMsg, null, 5);
+                    }
+
                 }
 
 
@@ -289,14 +295,20 @@
                 $comment  = $_POST['commenting'];
                 $ads  = $_POST['ads'];
 
-                // Update The Database With This Info
+                if(checkIfExistInfo('*','categories','Name','ID',$name,$id) >= 1){
+                    $theMsg = "<div class='alert alert-danger' role='alert'>This Name Is Already Exists</div>";
+                    redirectHome($theMsg, 'back', 5);
+                }else {
+                    // Update The Database With This Info
 
-                $stmt = $con->prepare("UPDATE categories SET Name = ?, Description = ?,  Ordering = ?, Visibility = ?, Allow_Comment = ?, Allow_Ads = ? WHERE ID = ?");
-                $stmt->execute(array($name, $desc, $order, $visible, $comment, $ads, $id));
+                    $stmt = $con->prepare("UPDATE categories SET Name = ?, Description = ?,  Ordering = ?, Visibility = ?, Allow_Comment = ?, Allow_Ads = ? WHERE ID = ?");
+                    $stmt->execute(array($name, $desc, $order, $visible, $comment, $ads, $id));
 
-                // Echo Success Message
-                $theMsg = "<div class='alert alert-success' role='alert'>{$name} Category Is Updated Successfully</div>";
-                redirectHome($theMsg, 'back', 5);
+                    // Echo Success Message
+                    $theMsg = "<div class='alert alert-success' role='alert'>{$name} Category Is Updated Successfully</div>";
+                    redirectHome($theMsg, 'back', 5);
+                }
+
             }
 
         } elseif ($do == 'Delete') { // Delete Member

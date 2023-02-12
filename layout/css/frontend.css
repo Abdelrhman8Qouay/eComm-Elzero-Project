@@ -1,0 +1,119 @@
+/* --------------------------------*/
+/* Start Main Rules */
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --background-color: #38ffee;
+    --text-dark: #000;
+    --text-white: #fff;
+    --light-dark: #464646;
+
+    --deg-color-1: #B3C8F2;
+    --deg-color-2: #6BB3F2;
+    --deg-color-3: #84D904;
+    --deg-color-4: #F2E205;
+    --deg-color-5: #F23322;
+}
+
+body {
+    background-color: var(--background-color);
+}
+
+h1 {
+    font-size: 50px;
+    margin: 40px 0;
+    font-weight: bold;
+    color: var(--deg-color-5);
+}
+
+.asterisk {
+    color: red;
+    position: absolute;
+    right: -5px;
+    font-size: 30px;
+    top: 50%;
+}
+
+
+.self_modal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0000008b;
+    z-index: 5000;
+    visibility: hidden;
+}
+.self_modal.show {
+    visibility: visible;
+}
+.self_modal .card {
+    position: relative;
+    top: -50%;
+    visibility: hidden;
+    transition: 0.5s;
+    max-width: 50%;
+    max-height: 500px;
+    margin: 5rem auto;
+}
+.self_modal.show .card {
+    top: 0;
+    visibility: visible;
+}
+
+/* End Main Rules */
+/* --------------------------------*/
+/* Start Navbar Part */
+.navbar {
+    background-color: var(--light-dark);
+}
+
+.navbar .container .navbar-collapse .navbar-nav .nav-item .active {
+    color: var(--deg-color-1);
+}
+
+.navbar .container #userTarget {
+    color: var(--deg-color-1);
+}
+
+.material-symbols-outlined {
+    font-size: 16px;
+}
+
+.card-header {
+    background-color: var(--deg-color-5);
+    color: var(--text-white);
+}
+
+/* End Bootstrap Edits */
+/* --------------------------------*/
+/* Start Categories Page */
+.item-box {
+    position: relative;
+    color: var(--deg-color-5);
+    background: var(--deg-color-4);
+}
+.item-box .price-tag {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    background: var(--deg-color-3);
+    padding: 5px 10px;
+    border-radius: 20px 5px;
+    color: var(--text-dark);
+    text-shadow: 4px -4px 5px #000;
+}
+.item-box .card-body .card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;  /* lines You Want To Show And Hide The Rest */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+/* End Categories Page */
+/* --------------------------------*/

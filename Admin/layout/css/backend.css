@@ -6,19 +6,22 @@
     padding: 0;
     margin: 0;
 }
-body {
-    background-color: #F4F4F4;
-}
+
 :root {
-    --background-color: #F4F4F4;
+    --background-color: #38ffc6;
     --text-dark: #000;
     --text-white: #fff;
+    --light-dark: #464646;
 
     --deg-color-1: #0FC2C0;
     --deg-color-2: #0CABA8;
     --deg-color-3: #008F8C;
     --deg-color-4: #015958;
     --deg-color-5: #023535;
+}
+
+body {
+    background-color: var(--background-color);
 }
 
 h1 {
@@ -43,6 +46,9 @@ form.login .btn {
 /* End Login Form */
 /* --------------------------------*/
 /* Start Navbar Part */
+.navbar {
+    background-color: var(--light-dark);
+}
 
 .navbar .container .navbar-collapse .navbar-nav .nav-item .active {
     color: var(--deg-color-1);
@@ -130,6 +136,13 @@ form.login .btn {
 }
 .card_latest_users .card-body ol li a:hover {
     color: var(--deg-color-1);
+}
+
+.card_latest_users .card-body ol li .ms-2.me-auto {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;  /* lines You Want To Show And Hide The Rest */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 /* End Dashboard Page */
 /* --------------------------------*/

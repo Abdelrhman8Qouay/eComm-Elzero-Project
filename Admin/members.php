@@ -160,15 +160,23 @@
                         redirectHome($theMsg,'previous' , 5);
                     } else {
 
-                        // Insert User Info In Database
-                        $stmt = $con->prepare("INSERT INTO
-                                                    users(Username, Password, Email, FullName, RegStatus, Date)
-                                                VALUES(:user, :pass, :email, :zname, 1, now()) ");
-                        $stmt->execute(array('user' => $user, 'pass' => $hashPass, 'email' => $email, 'zname' => $name));
+                        if(checkIfExistInfo('*','users','Email',null ,$email,null) >= 1){
+                            $theMsg = "<div class='alert alert-danger' role='alert'>You Can't Add, This Email Is Already Exists</div>";
+                            redirectHome($theMsg, 'back', 5);
+                        }elseif (checkIfExistInfo('*','users','Username',null ,$user,null) >= 1){
+                            $theMsg = "<div class='alert alert-danger' role='alert'>You Can't Add, This User Name Is Already Exists</div>";
+                            redirectHome($theMsg, 'back', 5);
+                        } else {
+                            // Insert User Info In Database
+                            $stmt = $con->prepare("INSERT INTO
+                                                        users(Username, Password, Email, FullName, RegStatus, Date)
+                                                    VALUES(:user, :pass, :email, :zname, 1, now()) ");
+                            $stmt->execute(array('user' => $user, 'pass' => $hashPass, 'email' => $email, 'zname' => $name));
 
-                        // Echo Success Message
-                        $theMsg = "<div class='alert alert-success' role='alert'>{$stmt->rowCount()} Record Insert</div>";
-                        redirectHome($theMsg, null, 5);
+                            // Echo Success Message
+                            $theMsg = "<div class='alert alert-success' role='alert'>{$stmt->rowCount()} Record Insert</div>";
+                            redirectHome($theMsg, null, 5);
+                            }
                     }
 
                 }
@@ -209,7 +217,7 @@
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="hidden" name="oldpassword" value="<?php echo $row['Password'] ?>" />
-                            <input type="password" class="form-control" name="newpassword" id="password" autocomplete="new-password" required>
+                            <input type="password" class="form-control" name="newpassword" id="password" autocomplete="new-password">
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
@@ -281,14 +289,23 @@
 
                 // Check If There's No Error Proceed The Update Operation
                 if(empty($formErrors)) {
-                    // Update The Database With This Info
 
-                    $stmt = $con->prepare("UPDATE users SET Username = ?, Email = ?,  FullName = ?, Password = ? WHERE UserID = ?");
-                    $stmt->execute(array($user, $email, $name, $pass, $id));
+                    if(checkIfExistInfo('*','users','Email','UserID',$email,$id) >= 1){
+                        $theMsg = "<div class='alert alert-danger' role='alert'>This Email Is Already Exists</div>";
+                        redirectHome($theMsg, 'back', 5);
+                    }elseif (checkIfExistInfo('*','users','Username','UserID',$user,$id) >= 1){
+                        $theMsg = "<div class='alert alert-danger' role='alert'>This User Name Is Already Exists</div>";
+                        redirectHome($theMsg, 'back', 5);
+                    } else {
+                        // Update The Database With This Info
 
-                    // Echo Success Message
-                    $theMsg = "<div class='alert alert-success' role='alert'>{$stmt->rowCount()} Record Updated</div>";
-                    redirectHome($theMsg, 'back', 5);
+                        $stmt = $con->prepare("UPDATE users SET Username = ?, Email = ?,  FullName = ?, Password = ? WHERE UserID = ?");
+                        $stmt->execute(array($user, $email, $name, $pass, $id));
+
+                        // Echo Success Message
+                        $theMsg = "<div class='alert alert-success' role='alert'>{$stmt->rowCount()} Record Updated</div>";
+                        redirectHome($theMsg, 'back', 5);
+                    }
                 }
 
             } else {

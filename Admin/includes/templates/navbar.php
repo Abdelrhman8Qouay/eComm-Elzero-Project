@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark ">
   <div class="container">
     <a class="navbar-brand" href="#">Admin_eComm</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,7 +22,7 @@
           <a class="nav-link" aria-current="page" href="#">Statistics</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">Comments</a>
+          <a class="nav-link" aria-current="page" href="comments.php">Comments</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="#">Logs</a>
@@ -34,6 +34,7 @@
             <?php echo $_SESSION['Username'] ?>
           </a>
           <ul class="dropdown-menu" aria-labelledby="userTarget">
+            <li><a class="dropdown-item" href="../index.php">Visit Shop</a></li>
             <li><a class="dropdown-item" href="members.php?do=Edit&userid=<?php echo $_SESSION['ID'] ?>">Edit Profile</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><hr class="dropdown-divider"></li>

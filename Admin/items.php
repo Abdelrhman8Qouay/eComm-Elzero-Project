@@ -307,6 +307,55 @@
                             </div>
                         </div>
                     </form>
+                    <?php
+                    $stmt = $con->prepare("SELECT
+                                                comments.*, users.Username AS Member
+                                            FROM
+                                                comments
+                                            INNER JOIN
+                                                users
+                                            ON
+                                                users.UserID = comments.user_id
+                                            WHERE
+                                                item_id = ?");
+                    $stmt->execute(array($itemid));
+                    // Assign To Variable
+                    $rows = $stmt->fetchAll();
+
+                    if(!empty($rows)) {
+                    ?>
+                    <div class="container my-3">
+                        <h1 class="text-center">Manage [ <?php echo $item['Name'] ?> ] Comments</h1>
+
+                        <table class="main-table table table-dark table-striped">
+                            <thead class="text-center">
+                                <tr>
+                                    <th scope="col">Comment</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Added Data</th>
+                                    <th scope="col">Control</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                            <?php foreach($rows as $row): ?>
+                                <tr>
+                                    <th><?php echo $row['comment'] ?></th>
+                                    <th><?php echo $row['Member'] ?></th>
+                                    <th><?php echo $row['comment_date'] ?></th>
+                                    <th><?php echo '
+                                        <a href="comments.php?do=Edit&comid=' . $row['c_id'] .' " class="btn btn-info"><span class="material-symbols-outlined">edit_note</span>Edit</a>
+                                        <a href="comments.php?do=Delete&comid=' . $row['c_id'] .' " class="btn btn-danger confirma-message"><span class="material-symbols-outlined">close</span>Delete</a>
+                                        ' ?></th>
+                                    <th><?php if ( $row['status'] == 0) { echo '<a href="comments.php?do=Approve&comid=' . $row['c_id'] .' " class="btn btn-primary">Approve</a>'; } ?></th>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php
+                    }
+                    ?>
                 </div>
 
                 <?php
