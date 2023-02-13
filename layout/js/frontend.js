@@ -1,11 +1,35 @@
 
+// Start Login & Signup Page ----------------------------->
+
+let loginBtns = document.querySelectorAll(".login_cont h1 span");
+let loginForm = document.querySelector(".login_cont .form_login");
+let signupForm = document.querySelector(".login_cont .form_signup");
+
+loginBtns.forEach(btn=> {
+    btn.addEventListener("click", ()=> {
+        loginBtns.forEach(btn=> btn.classList.remove("selected"));
+        btn.classList.add("selected");
+        if(btn.dataset.class == 'login') {
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+        } else {
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'block';
+        }
+    })
+})
+
+
+
+
+
+
+// _________________________________ Backend Works _________________
+
 // Home Dashboard Page ----------------------------->
 
 // For All dropdown buttons (+) on Latest
 let DropSelects = document.querySelectorAll(".card_latest_users .card-header .selecting");
-
-console.log(DropSelects);
-
 
 // Manage Members Pages ----------------------------->
 

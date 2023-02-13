@@ -18,17 +18,61 @@
     ** Get Items Function v1.0
     ** Function To Get Items From Database [ Users, Items, Comments ]
     */
-    function getItems($CatID) {
+    function getItems($where, $value) {
         global $con;
-        $getItems = $con->prepare("SELECT * FROM items WHERE Cat_ID = ? ORDER BY Item_ID DESC");
-        $getItems->execute(array($CatID));
+        $getItems = $con->prepare("SELECT * FROM items WHERE $where = ? ORDER BY Item_ID DESC");
+        $getItems->execute(array($value));
 
         $items = $getItems->fetchAll();
 
         return $items;
     }
 
+    /*
+    ** Check If User Is Not Activated
+    ** Function To Check The RegStatus Of The User [ Accept Params ]
+    */
+    function checkUserStatus($user) {
+        global $con;
+        $stmtx = $con->prepare("SELECT
+                                    Username, RegStatus
+                                FROM
+                                    users
+                                WHERE
+                                    Username = ?
+                                AND
+                                    RegStatus = 0");
+        $stmtx->execute(array($user));
+        $status = $stmtx->rowCount();
 
+        return $status;
+    }
+
+    /* SELF
+    ** Get One Information With ID Function v1.2
+    ** Function Get One Information In Database And Echo The Return [ Function Accept Parameters ]
+    ** $fieldInfo = The Field To Fetch The Info From It [ Example: username, password, email ]
+    ** $from  = The Table To Select From [ Example: user, item, categories ]
+    ** $value = The Value Is The ID Of The Item To Get From It
+    */
+    function getOneWithID($fieldInfo, $from, $fieldID, $value) {
+        global $con;
+
+        $statement1 = $con->prepare("SELECT $fieldInfo FROM $from WHERE $fieldID = ?");
+        $statement1->execute(array($value));
+
+        $getName = $statement1->fetchAll();
+
+        return $getName[0][$fieldInfo] ?? null;
+    }
+
+    /* SELF External World
+    ** Filter Input String Function v1.0
+    */
+    function filter_string_polyfill(string $string): string {
+        $str = preg_replace('/\x00|<[^>]*>?/', '', $string);
+        return str_replace(["'", '"'], ['&#39;', '&#34;'], $str);
+    }
 
 
 
@@ -126,28 +170,28 @@
         return $stmt2->fetchColumn();
     }
 
-    /* SELF
-    ** Get One Information With ID Function v1.0
-    ** Function Get One Information In Database And Echo The Return [ Function Accept Parameters ]
-    ** $fieldInfo = The Field To Fetch The Info From It [ Example: username, password, email ]
-    ** $from  = The Table To Select From [ Example: user, item, categories ]
-    ** $value = The Value Is The ID Of The Item To Get From It
-    */
-    function getOneWithID($fieldInfo, $from, $value = '', $fieldID = '') {
-        global $con;
+    // /* SELF
+    // ** Get One Information With ID Function v1.0
+    // ** Function Get One Information In Database And Echo The Return [ Function Accept Parameters ]
+    // ** $fieldInfo = The Field To Fetch The Info From It [ Example: username, password, email ]
+    // ** $from  = The Table To Select From [ Example: user, item, categories ]
+    // ** $value = The Value Is The ID Of The Item To Get From It
+    // */
+    // function getOneWithID($fieldInfo, $from, $value = '', $fieldID = '') {
+    //     global $con;
 
-        if(empty($value) &&  empty($fieldID)) {
-            $statement = $con->prepare("SELECT ($fieldInfo) FROM $from ");
-            $statement->execute();
-        } else {
-            $statement = $con->prepare("SELECT ($fieldInfo) FROM $from WHERE $fieldID = ?");
-            $statement->execute(array($value));
-        }
+    //     if(empty($value) &&  empty($fieldID)) {
+    //         $statement = $con->prepare("SELECT ($fieldInfo) FROM $from ");
+    //         $statement->execute();
+    //     } else {
+    //         $statement = $con->prepare("SELECT ($fieldInfo) FROM $from WHERE $fieldID = ?");
+    //         $statement->execute(array($value));
+    //     }
 
-        $getName = $statement->fetch();
+    //     $getName = $statement->fetchAll();
 
-        return $getName[$fieldInfo];
-    }
+    //     return $getName[$fieldInfo];
+    // }
 
     /*
     ** Get Latest Records Function v1.0

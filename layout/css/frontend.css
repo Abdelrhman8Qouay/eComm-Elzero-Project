@@ -8,16 +8,14 @@
 }
 
 :root {
-    --background-color: #38ffee;
+    --background-color: #95abcd;
     --text-dark: #000;
     --text-white: #fff;
     --light-dark: #464646;
 
-    --deg-color-1: #B3C8F2;
-    --deg-color-2: #6BB3F2;
-    --deg-color-3: #84D904;
-    --deg-color-4: #F2E205;
-    --deg-color-5: #F23322;
+    --deg-color-3: #2b95d7;
+    --deg-color-4: #d2f205;
+    --deg-color-5: #22f26b;
 }
 
 body {
@@ -28,7 +26,7 @@ h1 {
     font-size: 50px;
     margin: 40px 0;
     font-weight: bold;
-    color: var(--deg-color-5);
+    color: var(--light-dark);
 }
 
 .asterisk {
@@ -37,6 +35,11 @@ h1 {
     right: -5px;
     font-size: 30px;
     top: 50%;
+}
+
+
+.material-symbols-outlined {
+    font-size: 16px;
 }
 
 
@@ -69,51 +72,52 @@ h1 {
 
 /* End Main Rules */
 /* --------------------------------*/
-/* Start Navbar Part */
-.navbar {
-    background-color: var(--light-dark);
-}
 
-.navbar .container .navbar-collapse .navbar-nav .nav-item .active {
-    color: var(--deg-color-1);
-}
-
-.navbar .container #userTarget {
-    color: var(--deg-color-1);
-}
-
-.material-symbols-outlined {
-    font-size: 16px;
-}
-
-.card-header {
-    background-color: var(--deg-color-5);
+/* Start Login Page */
+.login_cont h1 {
     color: var(--text-white);
 }
-
-/* End Bootstrap Edits */
-/* --------------------------------*/
-/* Start Categories Page */
-.item-box {
-    position: relative;
+/* .login_cont h1 .selected {
     color: var(--deg-color-5);
-    background: var(--deg-color-4);
+} */
+/* .login_cont h1 span[data-class="login"].selected {
+    color: var(--deg-color-3);
 }
-.item-box .price-tag {
-    position: absolute;
-    left: 5px;
-    top: 5px;
-    background: var(--deg-color-3);
-    padding: 5px 10px;
-    border-radius: 20px 5px;
-    color: var(--text-dark);
-    text-shadow: 4px -4px 5px #000;
+.login_cont .form_login button {
+    background-color: var(--deg-color-3);
 }
-.item-box .card-body .card-text {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;  /* lines You Want To Show And Hide The Rest */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+.login_cont h1 span[data-class="signup"].selected {
+    color: var(--deg-color-5);
 }
-/* End Categories Page */
+.login_cont .form_signup button {
+    background-color: var(--deg-color-5);
+}
+.login_cont h1 span {
+    cursor: pointer;
+
+}
+
+.login_cont .form_loginSign {
+    max-width: 500px;
+    margin: auto;
+}
+
+.login_cont .form_loginSign button {
+    width: 100%;
+    margin: 20px 0;
+}
+.login_cont .form_loginSign .form-floating {
+    margin-bottom: 20px;
+}
+
+.login_cont .card {
+    margin: 5rem auto;
+    max-width: 700px;
+    background: var(--light-dark);
+}
+
+.login_cont .form_signup {
+    display: none;
+} */
+/* Start Login Page */
 /* --------------------------------*/

@@ -3,6 +3,12 @@
     // Connect With Database
     include 'Admin/connect.php';
 
+    $sessionUser = '';
+
+    if(isset($_SESSION['user'])){
+        $sessionUser = $_SESSION['user'];
+    }
+
     // Routes
 
     $tpl = 'includes/templates/'; // Template Directory

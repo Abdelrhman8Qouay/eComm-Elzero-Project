@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,23 @@
 </head>
 <body>
 <div class="upper-bar">
-    Upper Bar
+    <div class="container">
+      <?php
+        if(isset($_SESSION['user'])) {
+            echo 'Welcome ' . $_SESSION['user'];
+            echo ' <a href="profile.php">My Profile</a>';
+            echo ' <a href="logout.php">Logout</a>';
+            if (checkUserStatus($sessionUser) == 1) {
+              // User Is Not Active
+
+            }
+        } else {
+      ?>
+      <a href="login.php">
+        <span class="text-end">Login/Signup</span>
+      </a>
+      <?php } ?>
+    </div>
 </div>
 <nav class="navbar navbar-expand-lg navbar-dark ">
   <div class="container">
@@ -31,5 +48,42 @@
     </div>
   </div>
 </nav>
+
+<style>
+
+/* Start upper-bar Part */
+.upper-bar {
+    padding: 10px;
+    background-color: var(--light-dark);
+    color: var(--background-color);
+}
+.upper-bar a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--text-white);
+    transition: 0.3s;
+}
+.upper-bar a:hover {
+    color: var(--text-dark);
+}
+
+/* End upper-bar Part */
+/* --------------------------------*/
+/* Start navbar Edits */
+.navbar {
+    background-color: var(--text-dark);
+}
+
+.navbar .container .navbar-collapse .navbar-nav .nav-item .active {
+    color: var(--text-white);
+}
+
+.navbar .container #userTarget {
+    color: var(--deg-color-1);
+}
+
+
+/* End navbar Edits */
+</style>
 
 
